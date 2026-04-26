@@ -1,12 +1,20 @@
-const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date()
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date()
-  }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Messageboard</title>
+</head>
+<body>
+
+  <ul>
+    <% for (let i = 0; i < messages.length; i++) { %>
+      <li>
+        <span><%= messages[i].user %></span>
+        <span><%= messages[i].text %></span>
+        <span><%= messages[i].added %></span>
+      </li>
+    <% } %>
+  </ul>
+
+</body>
+</html>
