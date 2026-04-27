@@ -3,6 +3,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 
 
@@ -28,8 +29,9 @@ app.get('/new', (req, res) => {
 });
 
 app.post('/new', (req, res) =>{
-
-    messages.push({ text: messageText, user: messageUser, added: new Date() });
+    const messageText = req.body.messageText;
+    const nameText = req.body.nameText;
+    messages.push({ text: messageText, user: nameText, added: new Date() });
     res.redirect('/')
 })
 
