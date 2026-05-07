@@ -1,39 +1,31 @@
 const express = require("express");
 const app = express();
+const db = require("./db")
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-
-
-const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date()
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date()
-  }
-];
-
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+  const messages = await db.getMessages();
   res.render('index', { title: 'Mini Messageboard', messages: messages });
 });
 
 app.get('/new', (req, res) => {
-  res.render('form');
+  res.render('form', { error: null });
 });
 
-app.post('/new', (req, res) =>{
+app.post('/new', async (req, res) => {
     const messageText = req.body.messageText;
     const nameText = req.body.nameText;
-    messages.push({ text: messageText, user: nameText, added: new Date() });
-    res.redirect('/')
-})
+
+    if (!messageText || !nameText) {
+      return res.render('form', { error: 'Please enter your name and message.' });
+    }
+
+    await db.addMessage(messageText, nameText);
+    res.redirect('/');
+});
 
 app.listen(3000, () => {
   console.log("server running at PORT 3000");
